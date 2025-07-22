@@ -79,46 +79,49 @@ const TodayTasks = () => {
 
   const todayDate = format(new Date(), "EEEE, MMMM do")
 
+// Handler for mobile sidebar toggle - passed to Header component
+  const handleToggleMobileSidebar = () => {
+    // This function can be implemented to toggle mobile sidebar
+    // For now, it's a placeholder that can be connected to parent Layout
+    console.log('Toggle mobile sidebar');
+  }
+
   return (
     <div className="flex flex-col h-full">
-      {({ onToggleMobileSidebar }) => (
-        <>
-          <Header
-            title="Today"
-            subtitle={`${todayDate} • ${tasks.length} tasks`}
-            onSearch={handleSearch}
-            onAddTask={handleAddTask}
-            onToggleMobileSidebar={onToggleMobileSidebar}
+      <Header
+        title="Today"
+        subtitle={`${todayDate} • ${tasks.length} tasks`}
+        onSearch={handleSearch}
+        onAddTask={handleAddTask}
+        onToggleMobileSidebar={handleToggleMobileSidebar}
+      />
+      
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto p-6">
+          <TaskList
+            tasks={tasks}
+            loading={loading}
+            error={error}
+            searchQuery={searchQuery}
+            onTaskUpdate={handleTaskUpdate}
+            onTaskDelete={handleTaskDelete}
+            onTaskEdit={handleEditTask}
+            onEmptyAction={handleAddTask}
+            emptyTitle="No tasks for today"
+            emptyDescription="Your day is clear! Add some tasks to stay productive."
+            emptyActionText="Add Today's Task"
           />
-          
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-4xl mx-auto p-6">
-              <TaskList
-                tasks={tasks}
-                loading={loading}
-                error={error}
-                searchQuery={searchQuery}
-                onTaskUpdate={handleTaskUpdate}
-                onTaskDelete={handleTaskDelete}
-                onTaskEdit={handleEditTask}
-                onEmptyAction={handleAddTask}
-                emptyTitle="No tasks for today"
-                emptyDescription="Your day is clear! Add some tasks to stay productive."
-                emptyActionText="Add Today's Task"
-              />
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <QuickAddButton onClick={handleAddTask} />
+      <QuickAddButton onClick={handleAddTask} />
 
-          <TaskModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            task={selectedTask}
-            onTaskSaved={handleTaskSaved}
-          />
-        </>
-      )}
+      <TaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        task={selectedTask}
+        onTaskSaved={handleTaskSaved}
+      />
     </div>
   )
 }
