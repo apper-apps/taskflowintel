@@ -1,0 +1,90 @@
+[
+  {
+    "Id": 1,
+    "title": "Complete quarterly report",
+    "description": "Finish the Q4 financial analysis and submit to management",
+    "categoryId": 1,
+    "priority": "high",
+    "dueDate": "2024-01-15",
+    "completed": false,
+    "createdAt": "2024-01-10T08:00:00Z",
+    "order": 1
+  },
+  {
+    "Id": 2,
+    "title": "Team standup meeting",
+    "description": "Daily sync with the development team",
+    "categoryId": 1,
+    "priority": "medium",
+    "dueDate": "2024-01-12",
+    "completed": false,
+    "createdAt": "2024-01-10T09:00:00Z",
+    "order": 2
+  },
+  {
+    "Id": 3,
+    "title": "Buy groceries",
+    "description": "Get ingredients for dinner party this weekend",
+    "categoryId": 2,
+    "priority": "medium",
+    "dueDate": "2024-01-13",
+    "completed": false,
+    "createdAt": "2024-01-10T10:00:00Z",
+    "order": 3
+  },
+  {
+    "Id": 4,
+    "title": "Read React documentation",
+    "description": "Study the latest React 18 features and hooks",
+    "categoryId": 4,
+    "priority": "low",
+    "dueDate": "2024-01-20",
+    "completed": false,
+    "createdAt": "2024-01-10T11:00:00Z",
+    "order": 4
+  },
+  {
+    "Id": 5,
+    "title": "Morning workout",
+    "description": "45 minute cardio session at the gym",
+    "categoryId": 3,
+    "priority": "high",
+    "dueDate": "2024-01-12",
+    "completed": true,
+    "createdAt": "2024-01-10T06:00:00Z",
+    "order": 5
+  },
+  {
+    "Id": 6,
+    "title": "Call dentist",
+    "description": "Schedule annual checkup appointment",
+    "categoryId": 3,
+    "priority": "medium",
+    "dueDate": "2024-01-14",
+    "completed": false,
+    "createdAt": "2024-01-11T14:00:00Z",
+    "order": 6
+  },
+  {
+    "Id": 7,
+    "title": "Update portfolio website",
+    "description": "Add recent projects and refresh design",
+    "categoryId": 1,
+    "priority": "low",
+    "dueDate": "2024-01-25",
+    "completed": false,
+    "createdAt": "2024-01-11T16:00:00Z",
+    "order": 7
+  },
+  {
+    "Id": 8,
+    "title": "Plan weekend trip",
+    "description": "Research and book accommodation for city break",
+    "categoryId": 2,
+    "priority": "medium",
+    "dueDate": "2024-01-18",
+    "completed": false,
+    "createdAt": "2024-01-11T18:00:00Z",
+    "order": 8
+  }
+]
