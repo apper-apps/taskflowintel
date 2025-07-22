@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
-import toast from "react-hot-toast";
-import TaskList from "@/components/organisms/TaskList";
-import Header from "@/components/organisms/Header";
-import TaskModal from "@/components/organisms/TaskModal";
-import QuickAddButton from "@/components/molecules/QuickAddButton";
+import React, { useEffect, useState } from 'react'
+import { toast } from 'react-toastify'
+import TaskList from '@/components/organisms/TaskList'
+import Header from '@/components/organisms/Header'
+import TaskModal from '@/components/organisms/TaskModal'
+import QuickAddButton from '@/components/molecules/QuickAddButton'
 import { taskService } from "@/services/api/taskService";
 
 const AllTasks = () => {
