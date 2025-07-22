@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"
-import Header from "@/components/organisms/Header"
-import TaskList from "@/components/organisms/TaskList"
-import TaskModal from "@/components/organisms/TaskModal"
-import QuickAddButton from "@/components/molecules/QuickAddButton"
-import { taskService } from "@/services/api/taskService"
+import React, { useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import TaskList from "@/components/organisms/TaskList";
+import Header from "@/components/organisms/Header";
+import TaskModal from "@/components/organisms/TaskModal";
+import QuickAddButton from "@/components/molecules/QuickAddButton";
+import { taskService } from "@/services/api/taskService";
 
 const AllTasks = () => {
   const [tasks, setTasks] = useState([])
@@ -55,7 +56,7 @@ const AllTasks = () => {
     }
   }
 
-  const handleTaskUpdate = (updatedTask) => {
+const handleTaskUpdate = (updatedTask) => {
     if (updatedTask.completed) {
       setTasks(prev => prev.filter(task => task.Id !== updatedTask.Id))
     } else {
@@ -67,6 +68,23 @@ const AllTasks = () => {
 
   const handleTaskDelete = (taskId) => {
     setTasks(prev => prev.filter(task => task.Id !== taskId))
+  }
+
+  const handleTimerToggle = async (taskId) => {
+    try {
+      const updatedTask = await taskService.toggleTimer(taskId)
+      if (updatedTask) {
+        setTasks(prev => prev.map(task => 
+          task.Id === taskId ? updatedTask : task
+        ))
+        
+        const action = updatedTask.timeTracking?.isActive ? "started" : "stopped"
+        toast.success(`Timer ${action} for "${updatedTask.title}"`)
+      }
+    } catch (err) {
+      toast.error("Failed to toggle timer")
+      console.error("Error toggling timer:", err)
+    }
   }
 
   const activeTasks = tasks.filter(task => !task.completed)
@@ -85,7 +103,7 @@ const AllTasks = () => {
           
           <div className="flex-1 overflow-auto">
             <div className="max-w-4xl mx-auto p-6">
-              <TaskList
+<TaskList
                 tasks={activeTasks}
                 loading={loading}
                 error={error}
@@ -93,6 +111,7 @@ const AllTasks = () => {
                 onTaskUpdate={handleTaskUpdate}
                 onTaskDelete={handleTaskDelete}
                 onTaskEdit={handleEditTask}
+                onTimerToggle={handleTimerToggle}
                 onEmptyAction={handleAddTask}
                 emptyTitle="No active tasks"
                 emptyDescription="All your tasks are complete, or create your first task to get started!"

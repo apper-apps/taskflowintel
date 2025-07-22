@@ -1,19 +1,20 @@
-import { useState, useEffect } from "react"
-import { format } from "date-fns"
-import Button from "@/components/atoms/Button"
-import Input from "@/components/atoms/Input"
-import Textarea from "@/components/atoms/Textarea"
-import Select from "@/components/atoms/Select"
-import { categoryService } from "@/services/api/categoryService"
+import React, { useEffect, useState } from "react";
+import { format } from "date-fns";
+import Select from "@/components/atoms/Select";
+import Textarea from "@/components/atoms/Textarea";
+import Input from "@/components/atoms/Input";
+import Button from "@/components/atoms/Button";
+import { categoryService } from "@/services/api/categoryService";
 
 const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
-  const [categories, setCategories] = useState([])
+  const [categories, setCategories] = useState([]);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
     categoryId: "",
     priority: "medium",
-    dueDate: ""
+    dueDate: "",
+    estimatedHours: ""
   })
 
   useEffect(() => {
@@ -21,13 +22,14 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
   }, [])
 
   useEffect(() => {
-    if (task) {
+if (task) {
       setFormData({
         title: task.title || "",
         description: task.description || "",
         categoryId: task.categoryId?.toString() || "",
         priority: task.priority || "medium",
-        dueDate: task.dueDate ? format(new Date(task.dueDate), "yyyy-MM-dd") : ""
+        dueDate: task.dueDate ? format(new Date(task.dueDate), "yyyy-MM-dd") : "",
+        estimatedHours: task.estimatedHours?.toString() || ""
       })
     }
   }, [task])
@@ -53,10 +55,11 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
     e.preventDefault()
     if (!formData.title.trim()) return
 
-    const submitData = {
+const submitData = {
       ...formData,
       categoryId: parseInt(formData.categoryId) || null,
-      dueDate: formData.dueDate || null
+      dueDate: formData.dueDate || null,
+      estimatedHours: parseFloat(formData.estimatedHours) || null
     }
 
     onSubmit(submitData)
@@ -134,6 +137,21 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
           name="dueDate"
           value={formData.dueDate}
           onChange={handleChange}
+/>
+      </div>
+
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-2">
+          Estimated Hours
+        </label>
+        <Input
+          type="number"
+          name="estimatedHours"
+          value={formData.estimatedHours}
+          onChange={handleChange}
+          placeholder="0"
+          min="0"
+          step="0.25"
         />
       </div>
 
@@ -151,10 +169,10 @@ const TaskForm = ({ task, onSubmit, onCancel, isLoading = false }) => {
           disabled={isLoading || !formData.title.trim()}
         >
           {isLoading ? "Saving..." : task ? "Update Task" : "Create Task"}
-        </Button>
+</Button>
       </div>
     </form>
-  )
-}
+  );
+};
 
-export default TaskForm
+export default TaskForm;

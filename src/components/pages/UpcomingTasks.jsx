@@ -1,9 +1,10 @@
-import { useState, useEffect } from "react"
-import Header from "@/components/organisms/Header"
-import TaskList from "@/components/organisms/TaskList"
-import TaskModal from "@/components/organisms/TaskModal"
-import QuickAddButton from "@/components/molecules/QuickAddButton"
-import { taskService } from "@/services/api/taskService"
+import React, { useEffect, useState } from "react";
+import TaskList from "@/components/organisms/TaskList";
+import Header from "@/components/organisms/Header";
+import TaskModal from "@/components/organisms/TaskModal";
+import QuickAddButton from "@/components/molecules/QuickAddButton";
+import { taskService } from "@/services/api/taskService";
+import { toast } from "react-toastify";
 
 const UpcomingTasks = () => {
   const [tasks, setTasks] = useState([])
@@ -64,7 +65,7 @@ const UpcomingTasks = () => {
     }
   }
 
-  const handleTaskUpdate = (updatedTask) => {
+const handleTaskUpdate = (updatedTask) => {
     if (updatedTask.completed) {
       setTasks(prev => prev.filter(task => task.Id !== updatedTask.Id))
     } else {
@@ -78,46 +79,59 @@ const UpcomingTasks = () => {
     setTasks(prev => prev.filter(task => task.Id !== taskId))
   }
 
-  return (
+  const handleTimerToggle = async (taskId) => {
+    try {
+      const updatedTask = await taskService.toggleTimer(taskId)
+      if (updatedTask) {
+        setTasks(prev => prev.map(task => 
+          task.Id === taskId ? updatedTask : task
+        ))
+        
+        const action = updatedTask.timeTracking?.isActive ? "started" : "stopped"
+        toast.success(`Timer ${action} for "${updatedTask.title}"`)
+      }
+    } catch (err) {
+      toast.error("Failed to toggle timer")
+      console.error("Error toggling timer:", err)
+    }
+  }
+
+return (
     <div className="flex flex-col h-full">
-      {({ onToggleMobileSidebar }) => (
-        <>
-          <Header
-            title="Upcoming Tasks"
-            subtitle={`${tasks.length} tasks scheduled`}
-            onSearch={handleSearch}
-            onAddTask={handleAddTask}
-            onToggleMobileSidebar={onToggleMobileSidebar}
+      <Header
+        title="Upcoming Tasks"
+        subtitle={`${tasks.length} tasks scheduled`}
+        onSearch={handleSearch}
+        onAddTask={handleAddTask}
+      />
+      
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto p-6">
+          <TaskList
+            tasks={tasks}
+            loading={loading}
+            error={error}
+            searchQuery={searchQuery}
+            onTaskUpdate={handleTaskUpdate}
+            onTaskDelete={handleTaskDelete}
+            onTaskEdit={handleEditTask}
+            onTimerToggle={handleTimerToggle}
+            onEmptyAction={handleAddTask}
+            emptyTitle="No upcoming tasks"
+            emptyDescription="Schedule some tasks with future due dates to see them here."
+            emptyActionText="Schedule Task"
           />
-          
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-4xl mx-auto p-6">
-              <TaskList
-                tasks={tasks}
-                loading={loading}
-                error={error}
-                searchQuery={searchQuery}
-                onTaskUpdate={handleTaskUpdate}
-                onTaskDelete={handleTaskDelete}
-                onTaskEdit={handleEditTask}
-                onEmptyAction={handleAddTask}
-                emptyTitle="No upcoming tasks"
-                emptyDescription="Schedule some tasks with future due dates to see them here."
-                emptyActionText="Schedule Task"
-              />
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <QuickAddButton onClick={handleAddTask} />
+      <QuickAddButton onClick={handleAddTask} />
 
-          <TaskModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            task={selectedTask}
-            onTaskSaved={handleTaskSaved}
-          />
-        </>
-      )}
+      <TaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        task={selectedTask}
+        onTaskSaved={handleTaskSaved}
+      />
     </div>
   )
 }

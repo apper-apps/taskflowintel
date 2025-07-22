@@ -31,7 +31,7 @@ const CompletedTasks = () => {
     setSearchQuery(query)
   }
 
-  const handleTaskUpdate = (updatedTask) => {
+const handleTaskUpdate = (updatedTask) => {
     if (!updatedTask.completed) {
       setTasks(prev => prev.filter(task => task.Id !== updatedTask.Id))
     } else {
@@ -43,6 +43,11 @@ const CompletedTasks = () => {
 
   const handleTaskDelete = (taskId) => {
     setTasks(prev => prev.filter(task => task.Id !== taskId))
+  }
+
+  const handleTimerToggle = async (taskId) => {
+    // Completed tasks don't need timer functionality
+    // This is here for consistency but won't be called
   }
 
   return (
@@ -59,13 +64,14 @@ const CompletedTasks = () => {
           
           <div className="flex-1 overflow-auto">
             <div className="max-w-4xl mx-auto p-6">
-              <TaskList
+<TaskList
                 tasks={tasks}
                 loading={loading}
                 error={error}
                 searchQuery={searchQuery}
                 onTaskUpdate={handleTaskUpdate}
                 onTaskDelete={handleTaskDelete}
+                onTimerToggle={handleTimerToggle}
                 emptyTitle="No completed tasks"
                 emptyDescription="Complete some tasks to see your accomplishments here!"
                 emptyActionText="View All Tasks"

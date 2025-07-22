@@ -15,6 +15,7 @@ const TaskList = ({
   onTaskUpdate,
   onTaskDelete,
   onTaskEdit,
+  onTimerToggle,
   emptyTitle = "No tasks found",
   emptyDescription = "Create your first task to get started!",
   emptyActionText = "Add Task",
@@ -143,13 +144,14 @@ const TaskList = ({
     <div className="space-y-4">
       <AnimatePresence mode="popLayout">
         {filteredTasks.map((task) => (
-          <TaskItem
+<TaskItem
             key={task.Id}
             task={task}
             category={getCategoryForTask(task.categoryId)}
             onToggleComplete={handleToggleComplete}
             onEdit={onTaskEdit}
             onDelete={handleDeleteTask}
+            onTimerToggle={onTimerToggle}
           />
         ))}
       </AnimatePresence>

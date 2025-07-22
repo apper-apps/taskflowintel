@@ -12,6 +12,7 @@ const TaskItem = ({
   onToggleComplete, 
   onEdit, 
   onDelete, 
+  onTimerToggle,
   category 
 }) => {
   const [isCompleting, setIsCompleting] = useState(false)
@@ -81,10 +82,10 @@ const TaskItem = ({
                   task.completed && "line-through"
                 )}>
                   {task.description}
-                </p>
+</p>
               )}
 
-              <div className="flex items-center gap-3">
+              <div className="flex items-center gap-3 flex-wrap">
                 {category && (
                   <div className="flex items-center gap-1.5">
                     <ApperIcon 
@@ -113,10 +114,47 @@ const TaskItem = ({
                     {formatDueDate(task.dueDate)}
                   </div>
                 )}
+
+                {task.estimatedHours && (
+                  <div className="flex items-center gap-1 text-xs text-gray-500">
+                    <ApperIcon name="Clock" size={12} />
+                    {task.estimatedHours}h estimated
+                  </div>
+                )}
+
+                {task.timeTracking?.totalHours > 0 && (
+                  <div className="flex items-center gap-1 text-xs text-blue-600">
+                    <ApperIcon name="Timer" size={12} />
+                    {task.timeTracking.totalHours.toFixed(1)}h tracked
+                  </div>
+                )}
+
+                {task.timeTracking?.isActive && (
+                  <div className="flex items-center gap-1 text-xs text-green-600 font-medium animate-pulse">
+                    <div className="w-2 h-2 bg-green-500 rounded-full"></div>
+                    Active
+                  </div>
+                )}
               </div>
-            </div>
+</div>
 
             <div className="flex items-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+              {!task.completed && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={() => onTimerToggle && onTimerToggle(task.Id)}
+                  className={cn(
+                    "p-2",
+                    task.timeTracking?.isActive 
+                      ? "text-red-500 hover:text-red-700 hover:bg-red-50" 
+                      : "text-green-500 hover:text-green-700 hover:bg-green-50"
+                  )}
+                  title={task.timeTracking?.isActive ? "Stop Timer" : "Start Timer"}
+                >
+                  <ApperIcon name={task.timeTracking?.isActive ? "Square" : "Play"} size={14} />
+                </Button>
+              )}
               <Button
                 variant="ghost"
                 size="sm"
