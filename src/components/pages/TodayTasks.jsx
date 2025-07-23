@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { format } from "date-fns";
-import toast from "react-hot-toast";
+import { toast } from "react-toastify";
 import TaskList from "@/components/organisms/TaskList";
 import Header from "@/components/organisms/Header";
 import TaskModal from "@/components/organisms/TaskModal";
