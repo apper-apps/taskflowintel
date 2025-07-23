@@ -1,11 +1,12 @@
-import { useState, useEffect } from "react"
-import { motion, AnimatePresence } from "framer-motion"
-import { useLocation } from "react-router-dom"
-import ApperIcon from "@/components/ApperIcon"
-import CategoryItem from "@/components/molecules/CategoryItem"
-import { taskService } from "@/services/api/taskService"
-import { categoryService } from "@/services/api/categoryService"
-
+import React, { createContext, useContext, useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { useLocation } from "react-router-dom";
+import { AuthContext } from "@/App";
+import ApperIcon from "@/components/ApperIcon";
+import Categories from "@/components/pages/Categories";
+import CategoryItem from "@/components/molecules/CategoryItem";
+import { taskService } from "@/services/api/taskService";
+import { categoryService } from "@/services/api/categoryService";
 const Sidebar = ({ isOpen, onClose }) => {
   const location = useLocation()
   const [taskCounts, setTaskCounts] = useState({})
@@ -114,13 +115,17 @@ const Sidebar = ({ isOpen, onClose }) => {
                 />
               ))}
             </div>
-          </div>
+</div>
         )}
+        
+        <div className="mt-auto pt-6 border-t border-gray-200">
+          <LogoutButton />
+        </div>
       </nav>
     </div>
   )
 
-  // Mobile Sidebar
+  // Mobile Sidebar with logout
   const MobileSidebar = () => (
     <AnimatePresence>
       {isOpen && (
@@ -159,7 +164,7 @@ const Sidebar = ({ isOpen, onClose }) => {
               </div>
             </div>
 
-            <nav className="flex-1 p-6">
+            <nav className="flex-1 p-6 flex flex-col h-full">
               <div className="space-y-2">
                 {sidebarItems.map((item) => (
                   <CategoryItem
@@ -190,12 +195,31 @@ const Sidebar = ({ isOpen, onClose }) => {
                   </div>
                 </div>
               )}
+              
+              <div className="mt-auto pt-6 border-t border-gray-200">
+                <LogoutButton />
+              </div>
             </nav>
           </motion.div>
         </>
       )}
     </AnimatePresence>
   )
+
+  // Logout Button Component
+  const LogoutButton = () => {
+    const { logout } = useContext(AuthContext);
+    
+    return (
+      <button
+        onClick={logout}
+        className="w-full flex items-center gap-3 px-4 py-3 rounded-lg text-gray-700 hover:bg-red-50 hover:text-red-700 transition-all duration-200"
+      >
+        <ApperIcon name="LogOut" size={20} />
+        <span className="flex-1 text-left">Logout</span>
+      </button>
+    );
+};
 
   return (
     <>
