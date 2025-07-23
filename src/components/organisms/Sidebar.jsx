@@ -105,11 +105,11 @@ const Sidebar = ({ isOpen, onClose }) => {
               Categories
             </h3>
             <div className="space-y-2">
-              {categories.slice(0, 5).map((category) => (
+{categories.slice(0, 5).map((category) => (
                 <CategoryItem
                   key={category.Id}
                   icon={category.icon}
-                  label={category.name}
+                  label={category.Name || category.name}
                   to={`/categories?id=${category.Id}`}
                   color={category.color}
                 />
@@ -183,11 +183,11 @@ const Sidebar = ({ isOpen, onClose }) => {
                     Categories
                   </h3>
                   <div className="space-y-2">
-                    {categories.slice(0, 5).map((category) => (
+{categories.slice(0, 5).map((category) => (
                       <CategoryItem
                         key={category.Id}
                         icon={category.icon}
-                        label={category.name}
+                        label={category.Name || category.name}
                         to={`/categories?id=${category.Id}`}
                         color={category.color}
                       />

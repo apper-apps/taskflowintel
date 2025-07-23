@@ -89,46 +89,41 @@ const handleTaskUpdate = (updatedTask) => {
 
   const activeTasks = tasks.filter(task => !task.completed)
 
-  return (
+return (
     <div className="flex flex-col h-full">
-      {({ onToggleMobileSidebar }) => (
-        <>
-          <Header
-            title="All Tasks"
-            subtitle={`${activeTasks.length} active tasks`}
-            onSearch={handleSearch}
-            onAddTask={handleAddTask}
-            onToggleMobileSidebar={onToggleMobileSidebar}
+      <Header
+        title="All Tasks"
+        subtitle={`${activeTasks.length} active tasks`}
+        onSearch={handleSearch}
+        onAddTask={handleAddTask}
+      />
+      
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto p-6">
+          <TaskList
+            tasks={activeTasks}
+            loading={loading}
+            error={error}
+            searchQuery={searchQuery}
+            onTaskUpdate={handleTaskUpdate}
+            onTaskDelete={handleTaskDelete}
+            onTaskEdit={handleEditTask}
+            onTimerToggle={handleTimerToggle}
+            onEmptyAction={handleAddTask}
+            emptyTitle="No active tasks"
+            emptyDescription="All your tasks are complete, or create your first task to get started!"
           />
-          
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-4xl mx-auto p-6">
-<TaskList
-                tasks={activeTasks}
-                loading={loading}
-                error={error}
-                searchQuery={searchQuery}
-                onTaskUpdate={handleTaskUpdate}
-                onTaskDelete={handleTaskDelete}
-                onTaskEdit={handleEditTask}
-                onTimerToggle={handleTimerToggle}
-                onEmptyAction={handleAddTask}
-                emptyTitle="No active tasks"
-                emptyDescription="All your tasks are complete, or create your first task to get started!"
-              />
-            </div>
-          </div>
+        </div>
+      </div>
 
-          <QuickAddButton onClick={handleAddTask} />
+      <QuickAddButton onClick={handleAddTask} />
 
-          <TaskModal
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-            task={selectedTask}
-            onTaskSaved={handleTaskSaved}
-          />
-        </>
-      )}
+      <TaskModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        task={selectedTask}
+        onTaskSaved={handleTaskSaved}
+      />
     </div>
   )
 }

@@ -50,37 +50,32 @@ const handleTaskUpdate = (updatedTask) => {
     // This is here for consistency but won't be called
   }
 
-  return (
+return (
     <div className="flex flex-col h-full">
-      {({ onToggleMobileSidebar }) => (
-        <>
-          <Header
-            title="Completed Tasks"
-            subtitle={`${tasks.length} completed tasks`}
-            onSearch={handleSearch}
-            onToggleMobileSidebar={onToggleMobileSidebar}
-            showAddButton={false}
+      <Header
+        title="Completed Tasks"
+        subtitle={`${tasks.length} completed tasks`}
+        onSearch={handleSearch}
+        showAddButton={false}
+      />
+      
+      <div className="flex-1 overflow-auto">
+        <div className="max-w-4xl mx-auto p-6">
+          <TaskList
+            tasks={tasks}
+            loading={loading}
+            error={error}
+            searchQuery={searchQuery}
+            onTaskUpdate={handleTaskUpdate}
+            onTaskDelete={handleTaskDelete}
+            onTimerToggle={handleTimerToggle}
+            emptyTitle="No completed tasks"
+            emptyDescription="Complete some tasks to see your accomplishments here!"
+            emptyActionText="View All Tasks"
+            emptyIcon="CheckCircle"
           />
-          
-          <div className="flex-1 overflow-auto">
-            <div className="max-w-4xl mx-auto p-6">
-<TaskList
-                tasks={tasks}
-                loading={loading}
-                error={error}
-                searchQuery={searchQuery}
-                onTaskUpdate={handleTaskUpdate}
-                onTaskDelete={handleTaskDelete}
-                onTimerToggle={handleTimerToggle}
-                emptyTitle="No completed tasks"
-                emptyDescription="Complete some tasks to see your accomplishments here!"
-                emptyActionText="View All Tasks"
-                emptyIcon="CheckCircle"
-              />
-            </div>
-          </div>
-        </>
-      )}
+        </div>
+      </div>
     </div>
   )
 }
